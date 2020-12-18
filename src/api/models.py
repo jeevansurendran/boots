@@ -1,0 +1,64 @@
+from django.db import models
+from django.contrib.auth import get_user_model
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = 'category'
+
+
+class Product(models.Model):
+    name = models.CharField(max_length=50)
+    rating = models.PositiveSmallIntegerField()
+    description = models.TextField(default='Product Description.')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL)
+
+    class Meta:
+        db_table = 'product'
+        abstract = True
+
+
+class ProductItem(Product):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    size = models.CharField(max_length=2)
+    price = models.PositiveBigIntegerField() # store amount in paisa's or cents or whatever
+    color = models.CharField(max_length=2)
+
+    class Meta:
+        db_table = 'product_item'
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
+    cart = models.ManyToManyField(ProductItem)
+
+
+# Creating all django models
+class Address(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    line1 = models.CharField(max_length=255)
+    line2 = models.CharField(max_length=255)
+    line3 = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pin_code = models.PositiveIntegerField()
+
+    class Meta:
+        db_table = 'address'
+
+
+class Order(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.SET_NULL)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL)
+    products = models.ManyToManyField(ProductItem)
+
+    class Meta:
+        db_table = 'order'
+
+
+
+
+
+
