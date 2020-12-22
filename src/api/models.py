@@ -5,6 +5,9 @@ from django.contrib.auth import get_user_model
 class Category(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         db_table = 'category'
 
@@ -13,17 +16,19 @@ class Product(models.Model):
     name = models.CharField(max_length=50)
     rating = models.PositiveSmallIntegerField()
     description = models.TextField(default='Product Description.')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         db_table = 'product'
-        abstract = True
 
 
 class ProductItem(Product):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    prod = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="+")
     size = models.CharField(max_length=2)
-    price = models.PositiveBigIntegerField() # store amount in paisa's or cents or whatever
+    price = models.PositiveBigIntegerField()  # store amount in paisa's or cents or whatever
     color = models.CharField(max_length=2)
 
     class Meta:
@@ -50,15 +55,9 @@ class Address(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.SET_NULL)
-    address = models.ForeignKey(Address, on_delete=models.SET_NULL)
+    user = models.ForeignKey(UserProfile, on_delete=models.SET_NULL, null=True)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     products = models.ManyToManyField(ProductItem)
 
     class Meta:
         db_table = 'order'
-
-
-
-
-
-
