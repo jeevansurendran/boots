@@ -11,6 +11,7 @@ To run this on localhost clone the repo and run the following commands in the re
 virtualenv env
 source env/bin/activate
 pip install -r requirements.txt
+cd src
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
