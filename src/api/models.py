@@ -47,7 +47,7 @@ class Address(models.Model):
     line2 = models.CharField(max_length=255)
     line3 = models.CharField(max_length=255)
     city = models.CharField(max_length=50)
-    state = models.CharField(max_length=50)
+    state = models.CharField(max_length=50):
     pin_code = models.PositiveIntegerField()
 
     class Meta:
