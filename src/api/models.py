@@ -61,6 +61,3 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'order'
-
-
-# youtu.be/dQw4w9WgXcQ

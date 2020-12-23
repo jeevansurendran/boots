@@ -31,6 +31,3 @@ class AddressViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-
-
-# youtu.be/dQw4w9WgXcQ
